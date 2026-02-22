@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>একটি নতুন অধ্যায়</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --crimson: #6a1314;
+    --parchment: #f3ebdf;
+    --white: #ffffff;
+    --black: #0d0d0d;
+    --crimson-light: #8a1a1b;
+    --crimson-faint: rgba(106,19,20,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--parchment);
+    color: var(--black);
+    font-family: 'Noto Serif Bengali', serif;
+    overflow-x: hidden;
+  }
+
+  /* ── GRAIN OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.6;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background: var(--crimson);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 60px 24px;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -120px; left: -120px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: -80px;
+    width: 350px; height: 350px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+  }
+
+  .hero-ornament {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(80px, 18vw, 200px);
+    color: rgba(255,255,255,0.06);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    letter-spacing: -10px;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .hero-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 11px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: rgba(243,235,223,0.5);
+    margin-bottom: 28px;
+    animation: fadeUp 1s ease both;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(38px, 8vw, 88px);
+    color: var(--parchment);
+    text-align: center;
+    line-height: 1.1;
+    position: relative;
+    z-index: 2;
+    animation: fadeUp 1s 0.2s ease both;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: rgba(243,235,223,0.7);
+  }
+
+  .hero-divider {
+    width: 60px;
+    height: 1px;
+    background: rgba(243,235,223,0.3);
+    margin: 32px auto;
+    animation: fadeUp 1s 0.4s ease both;
+  }
+
+  .hero-sub {
+    font-size:20px;
+    color: rgba(243,235,223,0.65);
+    text-align: center;
+    max-width: 460px;
+    line-height: 1.9;
+    animation: fadeUp 1s 0.5s ease both;
+  }
+
+  .scroll-cue {
+    position: absolute;
+    bottom: 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: fadeUp 1s 0.8s ease both;
+  }
+
+  .scroll-cue span {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: rgba(243,235,223,0.35);
+    text-transform: uppercase;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, rgba(243,235,223,0.4), transparent);
+    animation: scrollPulse 2s ease infinite;
+  }
+
+  /* ── CHAPTER SECTION ── */
+  .chapter {
+    padding: 100px 24px;
+    max-width: 760px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .chapter-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 120px;
+    color: var(--crimson-faint);
+    position: absolute;
+    top: 60px;
+    left: -20px;
+    line-height: 1;
+    font-weight: 700;
+    user-select: none;
+  }
+
+  .chapter-tag {
+    font-size: 10px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--crimson);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .chapter-tag::before {
+    content: '';
+    width: 30px;
+    height: 1px;
+    background: var(--crimson);
+  }
+
+  .chapter-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 5vw, 42px);
+    color: var(--crimson);
+    margin-bottom: 32px;
+    line-height: 1.25;
+  }
+
+  .chapter-text {
+    font-size: 16px;
+    line-height: 2.1;
+    color: #2a1a1b;
+    margin-bottom: 24px;
+  }
+
+  /* ── QUESTION CARD ── */
+  .questions-section {
+    background: var(--white);
+    padding: 80px 24px;
+    border-top: 1px solid rgba(106,19,20,0.1);
+    border-bottom: 1px solid rgba(106,19,20,0.1);
+  }
+
+  .questions-inner {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--crimson);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .section-label::before {
+    content: '';
+    width: 30px; height: 1px;
+    background: var(--crimson);
+  }
+
+  .section-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 4vw, 38px);
+    color: var(--crimson);
+    margin-bottom: 48px;
+  }
+
+  .q-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .q-item {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 0;
+    border-bottom: 1px solid rgba(106,19,20,0.1);
+    padding: 28px 0;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .q-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .q-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    color: var(--crimson);
+    letter-spacing: 1px;
+    padding-top: 3px;
+  }
+
+  .q-text {
+    font-size: 22px;
+    line-height: 2;
+    color: #2a1a1b;
+  }
+
+  .q-text strong {
+    color: var(--crimson);
+    font-weight: 600;
+  }
+
+  /* ── CLOSING ── */
+  .closing {
+    padding: 100px 24px 80px;
+    max-width: 620px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .closing-ornament {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    color: var(--crimson);
+    margin-bottom: 24px;
+    opacity: 0.4;
+  }
+
+  .closing-text {
+    font-size: 17px;
+    line-height: 2.1;
+    color: #2a1a1b;
+    font-style: italic;
+    margin-bottom: 40px;
+  }
+
+  .closing-line {
+    width: 80px;
+    height: 2px;
+    background: var(--crimson);
+    margin: 0 auto 40px;
+  }
+
+  .closing-note {
+    font-size: 13px;
+    color: rgba(42,26,27,0.5);
+    letter-spacing: 1px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--crimson);
+    padding: 36px 24px;
+    text-align: center;
+  }
+
+  footer p {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    color: rgba(243,235,223,0.4);
+    letter-spacing: 3px;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50%       { opacity: 0.9; transform: scaleY(1.1); }
+  }
+
+  /* ── PULL QUOTE ── */
+  .pull-quote {
+    border-left: 3px solid var(--crimson);
+    padding: 20px 28px;
+    margin: 40px 0;
+    background: rgba(106,19,20,0.04);
+  }
+
+  .pull-quote p {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+    font-style: italic;
+    color: var(--crimson);
+    line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-ornament">∞</div>
+  <!-- <div class="hero-label">একটি বিশেষ মুহূর্ত</div> -->
+  <h1 class="hero-title">একটি নতুন<br><em>অধ্যায়ের</em> সূচনা</h1>
+  <div class="hero-divider"></div>
+  <p class="hero-sub">পৃথিবীতে কোনো মানুষই শতভাগ নিখুঁত নয়। তবুও, দুটি মনের মিলন তৈরি করে এক অনন্য গল্প।</p>
+  <div class="scroll-cue">
+    <div class="scroll-line"></div>
+    <span>নিচে পড়ুন</span>
+  </div>
+</section>
+
+<!-- CHAPTER 1 -->
+<section class="chapter">
+  <div class="chapter-number">১</div>
+  <div class="chapter-tag">প্রেক্ষাপট</div>
+  <h2 class="chapter-heading">ছাড় ও সমঝোতার কথা</h2>
+  <p class="chapter-text">
+    পৃথিবীতে কোনো মানুষই তো আর শতভাগ নিখুঁত নয়। আমাদের দুই পরিবার একে অপরকে পছন্দ করেছে, কিন্তু সেখানেও হয়তো দুপক্ষকেই কিছু বিষয়ে ছাড় দিতে হয়েছে।
+  </p>
+  <div class="pull-quote">
+    <p>"বিয়ের ক্ষেত্রে যদি 'বেসিক' বা মৌলিক বিষয়গুলো মিলে যায়, তবে অন্য ছোটখাটো বিষয়ে ছাড় দেওয়া কঠিন হয় না।"</p>
+  </div>
+  <p class="chapter-text">
+    জীবনসঙ্গী বেছে নেওয়ার প্রশ্নে আমরা সেই মৌলিক প্রশ্নগুলোর উত্তর খুঁজি যা দুটি জীবনকে একসূত্রে গেঁথে রাখে।
+  </p>
+</section>
+
+<!-- QUESTIONS -->
+<section class="questions-section">
+  <div class="questions-inner">
+    <div class="section-label">মূল জিজ্ঞাসা</div>
+    <h2 class="section-heading">যে প্রশ্নগুলো জানা দরকার</h2>
+
+    <div class="q-list">
+
+      <div class="q-item">
+        <span class="q-num">০১.</span>
+        <p class="q-text">
+          <strong>আপনার কাছে সেই 'বেসিক' বা ন্যূনতম প্রয়োজনীয় গুণগুলো কী কী যা আপনি একজন জীবনসঙ্গীর মাঝে খুঁজছেন?</strong> 
+        </p>
+      </div>
+
+      <div class="q-item">
+        <span class="q-num">০২.</span>
+        <p class="q-text">
+          <strong>মানসিক প্রস্তুতি।</strong> মানসিকভাবে আপনি কি এই নতুন সম্পর্কের জন্য পুরোপুরি প্রস্তুত?
+        </p>
+      </div>
+
+      <div class="q-item">
+        <span class="q-num">০৩.</span>
+        <p class="q-text">
+          <strong>পর্দার দৃষ্টিভঙ্গি।</strong> মাহরাম-নন মাহরামের বিধানগুলো মেনে চলা এবং নিকাবসহ পরিপূর্ণ পর্দা করার ব্যাপারে আপনার মতামত ও প্রস্তুতি কতটুকু?
+        </p>
+      </div>
+
+      <div class="q-item">
+        <span class="q-num">০৪.</span>
+        <p class="q-text">
+          <strong>সামাজিক বলয়।</strong> যেহেতু আপনি কো-এডুকেশন বা কম্বাইন্ড প্রতিষ্ঠানে পড়াশোনা করছেন, সেখানে আপনার কি কোনো ছেলে বন্ধু আছে?
+        </p>
+      </div>
+
+      <div class="q-item">
+        <span class="q-num">০৫.</span>
+        <p class="q-text">
+          <strong>সন্তানের শিক্ষা।</strong> ছেলেমেয়েকে মাদ্রাসায় পড়াতে চাই — এ বিষয়ে কোনো আপত্তি আছে কিনা?
+        </p>
+      </div>
+
+      <div class="q-item">
+        <span class="q-num">০৬.</span>
+        <p class="q-text">
+          <strong>ঈমানের ভিত্তি।</strong> ঈমান ভঙ্গের কারণসমূহ জানা আছে কিনা?
+        </p>
+      </div>
+
+      <div class="q-item">
+        <span class="q-num">০৭.</span>
+        <p class="q-text">
+          <strong>একাধিক বিবাহ।</strong> আল্লাহ তায়ালা একাধিক বিয়ের অনুমতি দিয়েছেন — এই ব্যাপারে আপনার মতামত কী?
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="closing">
+  <div class="closing-ornament">✦</div>
+  <p class="closing-text">
+    "সময় নিয়ে আপনার চিন্তাভাবনাগুলো শেয়ার করুন। প্রতিটি প্রশ্নের পেছনে আছে একটি ভবিষ্যতের স্বপ্ন, একটি যত্নশীল জীবনের আকাঙ্ক্ষা।"
+  </p>
+  <div class="closing-line"></div>
+  <p class="closing-note">আপনার উত্তরের অপেক্ষায়</p>
+</section>
+
+<footer>
+  <p>একটি নতুন অধ্যায় · একটি নতুন গল্প</p>
+</footer>
+
+<script>
+  // Intersection Observer for question items
+  const items = document.querySelectorAll('.q-item');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  items.forEach(item => observer.observe(item));
+</script>
+</body>
+</html>
